@@ -86,8 +86,8 @@ Optei por não usar `FAIL UPDATE`: uma única linha ruim derrubaria o lote intei
 
 O `checar_qualidade` reprovou o lote com **15,0% de linhas descartadas** (limite: 10%).
 
-- **Causa:** o município **[PREENCHER]** passou a enviar estornos como quantidade negativa, violando a regra `quantidade_valida`.
-- **Investigação:** conferi as métricas de qualidade da `silver_pedidos` no pipeline e consultei a bronze filtrando por `arquivo_origem` e agrupando por município.
+- **Causa:** o município **Igarapé-Miri** passou a enviar estornos como quantidade negativa (16 linhas do lote), violando a regra `quantidade_valida`.
+- - **Investigação:** conferi as métricas de qualidade da `silver_pedidos` no pipeline e consultei a bronze filtrando por `arquivo_origem` e agrupando por município.
 - **Decisão:** como os estornos devem mesmo ser descartados, o lote foi aceito.
 - **Correção:** **Repair run** com `limite_descarte = 20`. Só a tarefa `checar_qualidade` rodou de novo: o lote não foi copiado outra vez e o pipeline não reprocessou nada.
 
