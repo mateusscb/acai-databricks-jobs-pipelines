@@ -95,7 +95,7 @@ O `checar_qualidade` reprovou o lote com **15,0% de linhas descartadas** (limite
 
 | Pipeline | Job | Execuções |
 |---|---|---|
-| ![Grafo do pipeline](imagens/pipeline-grafo.png) | ![Grafo do job](imagens/job-grafo.png) | ![Aba Runs](imagens/job-runs.png) |
+| ![Grafo do pipeline](imagens/pipeline_acai_grafo.png) | ![Grafo do job](imagens/job_acai_diario_grafo.png) | ![Aba Runs](imagens/job_acai_diario_runs.png) |
 
 ## 💡 Aprendizados
 
