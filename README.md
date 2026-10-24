@@ -6,7 +6,7 @@ Pipeline de dados **bronze → silver → gold** com ingestão incremental, orqu
 ![SQL](https://img.shields.io/badge/SQL-Lakeflow%20Pipelines-blue)
 ![Python](https://img.shields.io/badge/Python-notebooks-3776AB?logo=python&logoColor=white)
 
-> Projeto prático da disciplina de Plataformas de Dados e IA com Databricks (CESUPA, 2026.2).
+> Projeto prático da disciplina **ERP: Estrutura, Fluxos e Integração de Dados** (CESUPA, 2026.2), aula "Plataformas de Dados e IA com Databricks".
 > Pipeline e notebooks-base fornecidos pelo **Prof. Isaac Souza Elgrably**; a montagem, a execução e a documentação são minhas.
 
 ---
