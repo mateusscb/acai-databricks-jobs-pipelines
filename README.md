@@ -21,7 +21,7 @@ Uma cooperativa fictícia de açaí recebe, todo dia, um CSV com os pedidos dos 
 flowchart LR
     subgraph JOB["Job · job_acai_diario"]
         A["receber_lote<br/>(notebook 01)"] --> B{"lote novo?<br/>(If/else)"}
-        B -- sim --> C["atualizar_pipeline<br/>(Pipeline)"]
+        B -- sim --> C["atualiza_pipeline<br/>(Pipeline)"]
         C --> D["checar_qualidade<br/>(notebook 02)"]
         B -- não --> E["fim, sem gastar computação"]
     end
@@ -65,26 +65,22 @@ Optei por não usar `FAIL UPDATE`: uma única linha ruim derrubaria o lote intei
 |---|---|---|---|
 | 1 | `receber_lote` | Notebook | Copia o próximo CSV da pasta `chegada/` para `pedidos/` e publica o *task value* `novo_lote` (1 ou 0) |
 | 2 | `tem_lote_novo` | If/else | Condição: `{{tasks.receber_lote.values.novo_lote}} == 1` |
-| 3 | `atualizar_pipeline` | Pipeline | Atualiza bronze, silver e gold só com o arquivo novo |
+| 3 | `atualiza_pipeline` | Pipeline | Atualiza bronze, silver e gold só com o arquivo novo |
 | 4 | `checar_qualidade` | Notebook | Calcula o percentual de linhas descartadas do lote e **falha** se passar de `limite_descarte` |
 
 - **Parâmetro do job:** `limite_descarte = 10` (%), lido pelo notebook como widget.
 - **Task values:** `receber_lote` avisa as tarefas seguintes qual lote chegou e se há lote novo.
 - **Gatilho:** agendamento diário às 06:00 (`America/Belem`), deixado **pausado** por causa da cota do Free Edition.
 
-## 📊 Resultados por execução
+## 📊 Contagens esperadas após cada lote
 
-| Execução | Lote | Bronze | Silver | Descarte | Resultado |
-|---|---|---|---|---|---|
-| Pipeline manual | 14/10 | 120 | 117 | 2,5% | ✅ |
-| Job #1 | 15/10 | 250 | 242 | 3,8% | ✅ |
-| Job #2 | 16/10 | 390 | 361 | 15,0% | ❌ reprovado (limite 10%) |
-| Job #2 · Repair run (limite = 20) | 16/10 | 390 | 361 | 15,0% | ✅ aceito |
-| Job #3 | nenhum | 390 | 361 | n/a | ✅ job termina sem rodar o pipeline |
+| Após o lote | Bronze | Silver | Descartadas no lote |
+|---|---|---|---|
+| 14/10 | 120 | 117 | 3 (2,5%) |
+| 15/10 | 250 | 242 | 5 (3,8%) |
+| 16/10 | 390 | 361 | 21 (15,0%) |
 
-### 🔍 O lote de 16/10
-
-O `checar_qualidade` reprovou o lote com **15,0% de linhas descartadas** (limite: 10%).
+O lote de 16/10 ultrapassa o limite de descarte de 10% definido no job (`limite_descarte`), e por isso o `checar_qualidade` o reprova.
 
 - **Causa:** o município **Igarapé-Miri** passou a enviar estornos como quantidade negativa (16 linhas do lote), violando a regra `quantidade_valida`.
 - - **Investigação:** conferi as métricas de qualidade da `silver_pedidos` no pipeline e consultei a bronze filtrando por `arquivo_origem` e agrupando por município.
