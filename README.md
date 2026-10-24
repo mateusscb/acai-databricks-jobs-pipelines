@@ -153,4 +153,4 @@ Atividade proposta pelo **Prof. Isaac Souza Elgrably** (CESUPA, 2026.2), que for
 ---
 
 **Mateus Sousa Castelo Branco** · Engenharia de Computação, CESUPA
-[GitHub](https://github.com/mateusscb) · [LinkedIn](https://www.linkedin.com/in/SEU-PERFIL)
+[GitHub](https://github.com/mateusscb) · [LinkedIn](https://www.linkedin.com/in/mateus-castelo-branco/?isSelfProfile=true)
