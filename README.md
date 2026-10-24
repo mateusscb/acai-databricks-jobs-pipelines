@@ -7,7 +7,7 @@ Pipeline de dados **bronze → silver → gold** com ingestão incremental, orqu
 ![Python](https://img.shields.io/badge/Python-notebooks-3776AB?logo=python&logoColor=white)
 
 > Projeto prático da disciplina de Plataformas de Dados e IA com Databricks (CESUPA, 2026.2).
-> Pipeline e notebooks-base fornecidos pelo **Prof. Isaac Souza Elgrably**; a montagem, a execução, a investigação do lote com problema e a documentação são minhas.
+> Pipeline e notebooks-base fornecidos pelo **Prof. Isaac Souza Elgrably**; a montagem, a execução e a documentação são minhas.
 
 ---
 
@@ -80,18 +80,29 @@ Optei por não usar `FAIL UPDATE`: uma única linha ruim derrubaria o lote intei
 | 15/10 | 250 | 242 | 5 (3,8%) |
 | 16/10 | 390 | 361 | 21 (15,0%) |
 
-O lote de 16/10 ultrapassa o limite de descarte de 10% definido no job (`limite_descarte`), e por isso o `checar_qualidade` o reprova.
+### 🔍 O lote de 16/10
+
+Com `limite_descarte = 10`, o lote de 16/10 ultrapassa o limite (15,0% de descarte), e por isso o `checar_qualidade` o reprova. Assim, nenhum relatório é gerado com o lote suspeito.
 
 - **Causa:** o município **Igarapé-Miri** passou a enviar estornos como quantidade negativa (16 linhas do lote), violando a regra `quantidade_valida`.
-- - **Investigação:** conferi as métricas de qualidade da `silver_pedidos` no pipeline e consultei a bronze filtrando por `arquivo_origem` e agrupando por município.
-- **Decisão:** como os estornos devem mesmo ser descartados, o lote foi aceito.
-- **Correção:** **Repair run** com `limite_descarte = 20`. Só a tarefa `checar_qualidade` rodou de novo: o lote não foi copiado outra vez e o pipeline não reprocessou nada.
+- **Como identificar:** consulta na bronze filtrando por `arquivo_origem` e agrupando por município as linhas com `qtd_litros` nula ou ≤ 0.
 
 ## 🖼️ Capturas de tela
 
-| Pipeline | Job | Execuções |
-|---|---|---|
-| ![Grafo do pipeline](imagens/pipeline_acai_grafo.png) | ![Grafo do job](imagens/job_acai_diario_grafo.png) | ![Aba Runs](imagens/job_acai_diario_runs.png) |
+### Pipeline
+Grafo do `pipeline_acai`, com as quatro tabelas (bronze, silver e duas gold).
+
+![Grafo do pipeline](imagens/pipeline_acai_grafo.png)
+
+### Job
+Grafo de tarefas do `job_acai_diario`, com o If/else e o ramo `True`.
+
+![Grafo do job](imagens/job_acai_diario_grafo.png)
+
+### Execuções
+Aba Runs do job, com as execuções e seus status.
+
+![Aba Runs](imagens/job_acai_diario_runs.png)
 
 ## 💡 Aprendizados
 
@@ -149,4 +160,4 @@ Atividade proposta pelo **Prof. Isaac Souza Elgrably** (CESUPA, 2026.2), que for
 ---
 
 **Mateus Sousa Castelo Branco** · Engenharia de Computação, CESUPA
-[GitHub](https://github.com/mateusscb) · [LinkedIn](https://www.linkedin.com/in/mateus-castelo-branco/?isSelfProfile=true)
+[GitHub](https://github.com/mateusscb) · [LinkedIn](https://www.linkedin.com/in/mateus-castelo-branco/)
